@@ -17,7 +17,8 @@ class CreateFeaturesTable extends Migration
             $table->id();
             $table->string('name');
             $table->bigInteger('user_id');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

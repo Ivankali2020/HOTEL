@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreFeatureRequest;
 use App\Http\Requests\UpdateFeatureRequest;
 use App\Models\Feature;
+use Illuminate\Support\Facades\Auth;
 
 class FeatureController extends Controller
 {
@@ -15,7 +16,8 @@ class FeatureController extends Controller
      */
     public function index()
     {
-        //
+        $features = Feature::all();
+        return view('Backend.Features.index',compact('features'));
     }
 
     /**
@@ -36,7 +38,11 @@ class FeatureController extends Controller
      */
     public function store(StoreFeatureRequest $request)
     {
-        //
+        $feature = new Feature();
+        $feature->name = $request->feature;
+        $feature->user_id = Auth::user()->id;
+        $feature->save();
+        return redirect()->back()->with('message',['icon'=>'success','text'=>'Successfully inserted']);
     }
 
     /**
@@ -58,7 +64,8 @@ class FeatureController extends Controller
      */
     public function edit(Feature $feature)
     {
-        //
+        $features = Feature::all();
+        return view('Backend.Features.edit',compact('feature','features'));
     }
 
     /**
@@ -70,7 +77,9 @@ class FeatureController extends Controller
      */
     public function update(UpdateFeatureRequest $request, Feature $feature)
     {
-        //
+        $feature->name = $request->feature;
+        $feature->update();
+        return redirect()->back()->with('message',['icon'=>'success','text'=>'Successfully updated']);
     }
 
     /**
@@ -81,6 +90,9 @@ class FeatureController extends Controller
      */
     public function destroy(Feature $feature)
     {
-        //
+        $feature->delete();
+
+        return redirect()->back()->with('message',['icon'=>'success','text'=>'Successfully deleted']);
+
     }
 }
