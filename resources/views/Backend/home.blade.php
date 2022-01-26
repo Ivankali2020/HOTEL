@@ -18,6 +18,16 @@
         <div class="row ">
             <div class="col-xxl-10  m-auto ">
                 <div class="card app-page-title ">
+                    <div class="form-group">
+                        <form action="{{ route('home') }}" method="get">
+                            @csrf
+                            <input type="date" onchange="this.form.submit()" value="5/4/2021" name="date" class="form-control ">
+                        </form>
+                    </div>
+
+                    @if(count($rooms) > 0)
+                        <span> {{ $rooms->pluck('created_at') }} </span>
+                        @endif
                 </div>
             </div>
         </div>

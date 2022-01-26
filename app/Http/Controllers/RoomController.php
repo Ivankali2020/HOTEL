@@ -22,6 +22,8 @@ class RoomController extends Controller
     {
         $rooms = Room::when(Auth::user()->role != '1',function ($q){
             return $q->where('user_id',Auth::id());
+        })->when(isset(request()->search),function ($q){
+            return $q->orWhere('name',request()->search)->orWhere('price',request()->search);
         })->orderBy('id','desc')->simplePaginate(5);
         return view('Backend.Rooms.index',compact('rooms'));
 
@@ -45,15 +47,25 @@ class RoomController extends Controller
      */
     public function store(StoreRoomRequest $request)
     {
+
         $request->validate([
             "photos" => "required",
+            "photo" => "required|mimes:jpeg,png|max:5000",
             "photos.*" => "file|mimes:jpeg,png|max:5000"
         ]);
         if(!Storage::exists("public/thumbnail")){
             Storage::makeDirectory("public/thumbnail");
         }
+
         DB::beginTransaction();
         try {
+            $file = $request->file('photo');
+            $newName = uniqid()."_photo.".$file->extension();
+            $file->storeAs('public/photo',$newName);
+
+            $img = Image::make($file);
+            $img->fit(200,200);
+            $img->save(public_path("/storage/thumbnail/".$newName),60);
 
             $room = new Room();
             $room->name = $request->name;
@@ -68,11 +80,11 @@ class RoomController extends Controller
 
             foreach ($request->file('photos') as $photo){
                 $newName = uniqid()."_photo.".$photo->extension();
-                $photo->storeAs('public/photo',$newName);
+//                $photo->storeAs('public/photo',$newName);
 
                 $img = Image::make($photo);
-                $img->fit(200,200);
-                $img->save(public_path("/storage/thumbnail/".$newName),60);
+                $img->fit(450,300);
+                $img->save(public_path("/storage/photo/".$newName),100);
 
 
                 $photo = new Photo();
@@ -101,7 +113,7 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        //
+        return view('Backend.Rooms.show',compact('room'));
     }
 
     /**
@@ -125,10 +137,25 @@ class RoomController extends Controller
      */
     public function update(UpdateRoomRequest $request, Room $room)
     {
+
+        $request->validate([
+            "photo" => "required|mimes:jpeg,png|max:5000",
+        ]);
+        if(!Storage::exists("public/thumbnail")){
+            Storage::makeDirectory("public/thumbnail");
+        }
+        $file = $request->file('photo');
+        $newName = uniqid()."_photo.".$file->extension();
+        $file->storeAs('public/photo',$newName);
+
+        $img = Image::make($file);
+        $img->fit(200,200);
+        $img->save(public_path("/storage/thumbnail/".$newName),60);
+
         $room->name = $request->name;
         $room->description = $request->description;
         $room->price = $request->price;
-        $room->feature_photo = 'feature.png';
+        $room->feature_photo = $newName;
         $room->user_id = Auth::user()->id;
         $room->slug = \Illuminate\Support\Str::slug($request->name);
         $room->update();

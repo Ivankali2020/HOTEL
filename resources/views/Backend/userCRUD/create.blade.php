@@ -21,7 +21,6 @@
 
                 <form action="{{ route('user.store') }}" method="post" id="create">
                     @csrf
-
                     <div class="form-group">
                         <label for="">Name</label>
                         <input type="text"  class="form-control " name="name" >
@@ -63,7 +62,7 @@
 @endsection
 
 @section('script')
-    {!! JsValidator::formRequest('App\Http\Requests\UserCreateRequest', '#create'); !!}
+    {!! JsValidator::formRequest('App\Http\Requests\StoreBookingRequest', '#create'); !!}
 
 
 @endsection
