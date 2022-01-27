@@ -23,7 +23,7 @@
                         <div class="d-flex justify-content-between align-content-centerc">
                             <a href="{{ route('booking.index') }}" class="h4 icon-gradient bg-mean-fruit d-flex align-items-center   mb-0 ">
                                 <span class="pe-7s-home  mr-3 h2  "></span>
-                                <span class="lead "> Room Lists  </span>
+                                <span class="lead "> Booking Lists  </span>
                             </a>
                             <form action="{{ route('booking.index') }}" method="get" class="d-flex ">
                                 <div class="form-group  mr-4  mb-0 " >
