@@ -20,12 +20,24 @@
         <div class="row p-0 ">
 
             <div class="col-xl-10 ">
-                <div class="card ">
-                    <div class="card-body ">
-                        <h4 class="icon-gradient bg-mean-fruit d-flex align-items-center  ">
-                            <span class="pe-7s-home  mr-3 h2  "></span>
-                            <span class="lead "> Room Lists  </span>
-                        </h4>
+                <div class="card app-page-title">
+                    <div class="card-body  ">
+                      <div class="d-flex justify-content-between align-content-centerc">
+                          <a href="{{ route('rooms.index') }}" class="h4 icon-gradient bg-mean-fruit d-flex align-items-center   mb-0 ">
+                              <span class="pe-7s-home  mr-3 h2  "></span>
+                              <span class="lead "> Room Lists  </span>
+                          </a>
+                          <form action="{{ route('rooms.index') }}" method="get" class="d-flex ">
+                              <div class="form-group  mr-4  mb-0 " >
+                                  <input type="text" placeholder="search" name="search" class="form-control">
+                              </div>
+                              <div class="form-group mb-0 ">
+                                    <button class="btn btn-outline-primary">
+                                        <i class="pe-7s-search h6" ></i>
+                                    </button>
+                              </div>
+                          </form>
+                      </div>
                         <table class="table  table-bordered  p-0  mt-3 table-responsive-md  ">
                             <tr class="table-success font-weight-bolder  ">
                                 <td>No</td>
@@ -36,7 +48,7 @@
                             </tr>
 
                             <tbody>
-                            @foreach($rooms as $room)
+                            @forelse($rooms as $room)
                                 <tr>
                                     <td>{{ $room->id }}</td>
                                     <td class="text-nowrap ">{{ $room->name }} </td>
@@ -57,8 +69,11 @@
                                     </td>
                                     </td>
                                 </tr>
-
-                            @endforeach
+                            @empty
+                                <tr class="">
+                                    <td>THERE IS NO DATE</td>
+                                </tr>
+                            @endforelse
 
                             </tbody>
 

@@ -19,10 +19,10 @@
 
     <div class="container mt-3">
         <div class="row">
-            <div class="col-xl-9 m-auto ">
+            <div class="col-xl-8 m-auto ">
                 <div class="card">
                     <div class="card-body">
-                        <form class=" mt-2 " action="{{ route('rooms.store') }}" method="POST" enctype="multipart/form-data">
+                        <form class=" mt-2 " id="createForm" action="{{ route('rooms.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row ">
                                 <div class="form-group col-6">
@@ -43,13 +43,13 @@
 
                             <div class="form-group ">
                                 <label class="form-label  icon-gradient bg-mean-fruit h6">Photo</label>
-                                <input type="file" name="photos[]" value="{{ old('photos') }}"  class="form-control" multiple  accept="image/jpeg,image/png">
-                                @error('photos')
-                                <x-alert error="{{ $message }}" css="danger my-4 "> </x-alert>
-                                @enderror
-                                @error('photos.*')
-                                <x-alert error="{{ $message }}" css="danger my-4 "> </x-alert>
-                                @enderror
+                                <input type="file" name="photo" value="{{ old('photo') }}"  class="form-control"   accept="image/jpeg,image/png">
+{{--                                @error('photos')--}}
+{{--                                <x-alert error="{{ $message }}" css="danger my-4 "> </x-alert>--}}
+{{--                                @enderror--}}
+{{--                                @error('photos.*')--}}
+{{--                                <x-alert error="{{ $message }}" css="danger my-4 "> </x-alert>--}}
+{{--                                @enderror--}}
                             </div>
                             <div class="form-group   ">
                                 <label class="form-label  icon-gradient bg-mean-fruit h6">Rooms Features</label>
@@ -86,10 +86,27 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group mb-0   ">
-                                <input type="submit" class="btn btn-secondary  mt-2  icon-gradient bg-mean-fruit ">
-                            </div>
+
                         </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3  ">
+                <div class="card  ">
+                    <div class="card-body text-center p-0 mt-2  ">
+                            <div class="form-group">
+                                <input type="file" form="createForm" onchange="document.getElementById('createForm').onsubmit()" id="photoAdd" hidden name="photos[]" value="{{ old('photos') }}"  class="form-control" multiple  accept="image/jpeg,image/png">
+                            </div>
+                            @error('photos')
+                            <x-alert error="{{ $message }}" css="danger my-4 "> </x-alert>
+                            @enderror
+                        <div class="">
+                            <span class="pe-7s-plus h1" onclick="document.getElementById('photoAdd').click()"></span>
+                        </div>
+                        <div class="form-group my-2   ">
+                            <input type="submit" form="createForm" class="btn btn-secondary  mt-2  icon-gradient bg-mean-fruit ">
+                        </div>
                     </div>
                 </div>
             </div>

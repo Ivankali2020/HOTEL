@@ -40,6 +40,14 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="form-group ">
+                                <label class="form-label  icon-gradient bg-mean-fruit h6">Photo</label>
+                                <input type="file" name="photo" value="{{ old('photo') }}"  class="form-control"   accept="image/jpeg,image/png">
+                                @error('photo')
+                                <x-alert error="{{ $message }}" css="danger my-4 "> </x-alert>
+                                @enderror
+
+                            </div>
 
                             <div class="form-group   ">
                                 <label class="form-label  icon-gradient bg-mean-fruit h6">Rooms Features</label>

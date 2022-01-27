@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\WelcomeController::class,'index'])->name('welcome');
 
 Auth::routes();
 
@@ -27,5 +25,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('/rooms', \App\Http\Controllers\RoomController::class);
     Route::resource('/photos', \App\Http\Controllers\PhotoController::class);
     Route::resource('/user', \App\Http\Controllers\UserController::class);
+    Route::resource('/booking', \App\Http\Controllers\BookingController::class);
     Route::post('/user/upgradeAdmin', [\App\Http\Controllers\UserController::class, 'upgradeAdmin'])->name('user.upgradeAdmin');
 });

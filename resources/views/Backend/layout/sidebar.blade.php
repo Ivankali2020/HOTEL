@@ -35,6 +35,8 @@
                 <x-side-bar route="{{ route('rooms.create') }}" sidebarname="Create Room" icon="pe-7s-magic-wand "  active="room_create_active"/>
                 <x-side-bar route="{{ route('rooms.index') }}" sidebarname="Room List" icon=" pe-7s-home "  active="room_index_active"/>
 {{--                <x-side-bar route="{{ route('serie.index') }}" sidebarname=" Series List" icon="pe-7s-menu "  active="serie_index_active"/>--}}
+                <li class="app-sidebar__heading">Booking Manager</li>
+                <x-side-bar route="{{ route('booking.index') }}" sidebarname="Booking List" icon="pe-7s-users "  active="booking_index_active"/>
 
             </ul>
         </div>
