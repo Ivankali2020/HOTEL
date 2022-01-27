@@ -71,7 +71,7 @@ class RoomController extends Controller
             $room->name = $request->name;
             $room->description = $request->description;
             $room->price = $request->price;
-            $room->feature_photo = 'feature.png';
+            $room->feature_photo = $newName;
             $room->user_id = Auth::user()->id;
             $room->slug = \Illuminate\Support\Str::slug($request->name);
             $room->save();
