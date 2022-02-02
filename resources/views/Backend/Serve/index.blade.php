@@ -1,6 +1,6 @@
 @extends('Backend.layout.app')
-@section('title') Booking  @endsection
-@section('booking_index_active','mm-active')
+@section('title') Serving Booking  @endsection
+@section('confirm_booking_server_active','mm-active')
 @section('content')
     <div class="app-page-title">
         <div class="page-title-wrapper">
@@ -9,7 +9,7 @@
                     <i class="pe-7s-users icon-gradient bg-mean-fruit">
                     </i>
                 </div>
-                <div> Booking List </div>
+                <div> Serving List </div>
             </div>
 
         </div>
@@ -21,11 +21,11 @@
                 <div class="card app-page-title">
                     <div class="card-body  ">
                         <div class="d-flex justify-content-between align-content-centerc">
-                            <a href="{{ route('booking.index') }}" class="h4 icon-gradient bg-mean-fruit d-flex align-items-center   mb-0 ">
+                            <a href="{{ route('confirm_booking.serving') }}" class="h4 icon-gradient bg-mean-fruit d-flex align-items-center   mb-0 ">
                                 <span class="pe-7s-home  mr-3 h2  "></span>
-                                <span class="lead "> Booking Lists  </span>
+                                <span class="lead "> Confirmed Lists  </span>
                             </a>
-                            <form action="{{ route('booking.index') }}" method="get" class="d-flex ">
+                            <form action="{{ route('confirm_booking.serving') }}" method="get" class="d-flex ">
                                 <div class="form-group  mr-4  mb-0 " >
                                     <input type="text" placeholder="search" name="search" class="form-control">
                                 </div>
@@ -41,28 +41,27 @@
                                 <td>No</td>
                                 <td>Name</td>
                                 <td>Phone</td>
-                                <td>Email</td>
+                                <td>Room</td>
                                 <td>Booking Date</td>
-                                <td>Confirm </td>
-                                <td>Action</td>
+                                <td class="text-danger ">CheckOut</td>
+                                <td>Price</td>
                             </tr>
 
                             <tbody>
-                            @forelse($bookings as $book)
+                            @forelse($servers as $server)
                                 <tr>
-                                    <td>{{ $book->id }}</td>
-                                    <td class="text-nowrap ">{{ $book->name }} </td>
-                                    <td class="text-nowrap ">{{ $book->phone }} </td>
-                                    <td>{{ $book->email }} </td>
+                                    <td>{{ $server->id }}</td>
+                                    <td class="text-nowrap ">{{ $server->name }} </td>
+                                    <td class="text-nowrap ">{{ $server->phone }} </td>
+                                    <td> {{ $server->getRoom->name }} </td>
                                     <td>
                                         @php
-                                            $first_datetime = new DateTime($book->date_from);
-                                            $last_datetime = new DateTime($book->date_to);
+                                            $first_datetime = new DateTime($server->date_from);
+                                            $last_datetime = today();
                                             $interval = $first_datetime->diff($last_datetime);
-                                            $final = $interval->format('%h');
                                         @endphp
                                         <small >
-                                           From -> {{  date('j M ',strtotime($book->date_from)) }} To -> {{  date('j M ',strtotime($book->date_to)) }}
+                                            From -> {{  date('j M ',strtotime($server->date_from)) }} To -> Pending ----
                                         </small >
                                         <br>
                                         <span>
@@ -71,19 +70,16 @@
 
                                     </td>
                                     <td>
-                                        <form action="{{ route('booking.confirm') }}" method="post" class="form-group text-center " >
+                                        <form action="{{ route('confirm_booking.checkIn') }}" method="post" class="form-group text-center " >
                                             @csrf
                                             <div class="form-check form-switch">
-                                                <input type="hidden" value="{{ $book->id}}" name="book_id">
+                                                <input type="hidden" value="{{ $server->id}}" name="book_id">
                                                 <input class="form-check-input"   name="booking_confirm" onchange="this.form.submit()" type="checkbox" role="switch" id="flexSwitchCheckChecked" >
                                             </div>
                                         </form>
                                     </td>
                                     <td class="  ">
-                                        <form id="delBooking{{ $book->id }}" action="{{ route('booking.destroy',$book->id) }}" method="post" class=" d-inline     ">
-                                            @csrf @method('DELETE')
-                                            <div class="pe-7s-trash text-danger   text-decoration-none  fsize-1 " onclick="allow('{{$book->name}}','{{ $book->id }}')"></div>
-                                        </form>
+                                        {{ $interval->format('%a') == '0' ? $server->getRoom->price   :  $server->getRoom->price * $interval->format('%a') }} $
                                     </td>
                                 </tr>
                             @empty
@@ -95,7 +91,7 @@
                             </tbody>
 
                         </table>
-                        <span >{!! $bookings->links() !!}</span>
+                        <span >{!! $servers->links() !!}</span>
                     </div>
                 </div>
             </div>
@@ -117,7 +113,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#delBooking'+id).submit();
+                    $('#delConfirmBtn'+id).submit();
                 }
             })
         }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreConfirmBookingRequest;
 use App\Http\Requests\UpdateConfirmBookingRequest;
 use App\Models\ConfirmBooking;
+use Illuminate\Http\Request;
 
 class ConfirmBookingController extends Controller
 {
@@ -15,7 +16,12 @@ class ConfirmBookingController extends Controller
      */
     public function index()
     {
-        //
+        $bookings = ConfirmBooking::when(isset(request()->search),function ($q){
+            $code = request()->search;
+            return $q->where('name','LIKE',"%$code%")->orWhere('phone','LIKE',"%$code%");
+        })->where('checkIn','=','0')->whereDate('date_from','>=',today()->toDateString())->orderBy('id','desc')->simplePaginate(5);
+//        return $bookings;
+        return view('Backend.Confirm_Booking.index',compact('bookings'));
     }
 
     /**
@@ -47,7 +53,7 @@ class ConfirmBookingController extends Controller
      */
     public function show(ConfirmBooking $confirmBooking)
     {
-        //
+        return $confirmBooking;
     }
 
     /**
@@ -79,8 +85,45 @@ class ConfirmBookingController extends Controller
      * @param  \App\Models\ConfirmBooking  $confirmBooking
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ConfirmBooking $confirmBooking)
+    public function destroy($id)
     {
-        //
+        $confirmBooking = ConfirmBooking::findOrFail($id);
+        $confirmBooking->delete();
+        return redirect()->back()->with('message',['icon'=>'success','text'=>'Successfully deleted']);
+
+    }
+
+
+    public function checkIn(Request $request)
+    {
+        $book = ConfirmBooking::findOrFail($request->book_id);
+        if($book->checkIn == 0){
+            $book->checkIn = '1';
+            $book->update();
+
+            return redirect()->back()->with('message',['icon'=>'success','text'=>'Your process is ok!']);
+
+        }else{
+            $book->checkIn = '2';
+            $book->update();
+
+            return view('Backend.Serve.receipt',compact('book'));
+        }
+
+    }
+
+    public function serving()
+    {
+
+        $servers = ConfirmBooking::when(isset(request()->search),function ($q){
+                        $code = request()->search;
+                        return $q->where('name','LIKE',"%$code%")->orWhere('phone','LIKE',"%$code%");
+                    })
+                    ->where('checkIn','=','1')
+                    ->whereDate('date_from','>=',today()->toDateString())
+                    ->with('getRoom')
+                    ->orderBy('id','desc')->simplePaginate(5);
+        //return $servers;
+        return view('Backend.Serve.index',compact('servers'));
     }
 }

@@ -22,7 +22,7 @@
     <div class="scrollbar-sidebar">
         <div class="app-sidebar__inner">
             <ul class="vertical-nav-menu">
-                <li class="app-sidebar__heading ">Dashboards</li>
+                <li class="app-sidebar__heading  ">Dashboards</li>
 
                 <x-side-bar route="{{ route('home') }}" sidebarname="Dashboard" icon="pe-7s-display2 "  active="admin_home_active"/>
                 <x-side-bar route="{{ route('features.index') }}" sidebarname="Create Features" icon="pe-7s-disk "  active="feature_index_active"/>
@@ -37,6 +37,8 @@
 {{--                <x-side-bar route="{{ route('serie.index') }}" sidebarname=" Series List" icon="pe-7s-menu "  active="serie_index_active"/>--}}
                 <li class="app-sidebar__heading">Booking Manager</li>
                 <x-side-bar route="{{ route('booking.index') }}" sidebarname="Booking List" icon="pe-7s-users "  active="booking_index_active"/>
+                <x-side-bar route="{{ route('booking_confirm.index') }}" sidebarname="Confirmed List" icon="pe-7s-bookmarks "  active="confirm_booking_index_active"/>
+                <x-side-bar route="{{ route('confirm_booking.serving') }}" sidebarname="Serving List" icon="pe-7s-server "  active="confirm_booking_server_active"/>
 
             </ul>
         </div>

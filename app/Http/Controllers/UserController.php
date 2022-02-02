@@ -79,7 +79,7 @@ class UserController extends Controller
      */
     public function edit(UserUpdateRequest $request,User $user)
     {
-
+        return $request;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
@@ -98,8 +98,14 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role = $request->role;
+        $user->update();
+        return redirect()->route('user.index')->with('message',['icon'=>'success','text'=>'successfully updated']);
     }
+
 
     /**
      * Remove the specified resource from storage.

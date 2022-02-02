@@ -21,7 +21,7 @@
                 @if(session('status'))
                     {{ session('status') }}
                 @endif
-                <form action="{{ url('admin/user/'.$user->id) }}" method="post" id="update">
+                <form action="{{ url('/user/'.$user->id) }}" method="post" id="update">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -45,11 +45,6 @@
                     <div class="form-group">
                         <label for="">Role</label>
                         <input type="number"  class="form-control  " value="{{ $user->role }}" name="role" >
-
-                    </div>
-                    <div class="form-group">
-                        <label for="">Premium</label>
-                        <input type="is_premium"  class="form-control  " value="{{ $user->is_premium }}" name="is_premium" >
 
                     </div>
 

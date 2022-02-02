@@ -6,6 +6,7 @@ use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,8 +19,17 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::orderBy('id','desc')->simplePaginate(5);
-        return view('Backend.Boooking.index',compact('bookings'));
+        $bookings = Booking::when(isset(request()->search),function ($q){
+            $code = request()->search;
+            return $q->where('name','LIKE',"%$code%")->orWhere('phone','LIKE',"%$code%");
+        })->orderBy('id','desc');
+        if(Auth::check()){
+            $bookings = $bookings->simplePaginate(5);
+            return view('Backend.Boooking.index',compact('bookings'));
+        }else{
+            $bookings = $bookings->where('id',Auth::id())->get();
+            return view('booking',compact('bookings'));
+        }
     }
 
     /**
@@ -104,5 +114,17 @@ class BookingController extends Controller
         $booking->delete();
         return redirect()->back()->with('message',['icon'=>'success','text'=>'Successfully Deleted']);
 
+    }
+
+
+    public function confirm(Request $request)
+    {
+        if(!isset($request->booking_confirm)){
+            return redirect()->back()->with('message',['icon'=>'success','text'=>'Something was wrong!']);
+        }
+        $book = Booking::find($request->book_id)->only(['name','email','phone','date_from','date_to','room_id']);
+        Booking::find($request->book_id)->delete();
+        DB::table('confirm_bookings')->insert($book);
+        return redirect()->back()->with('message',['icon'=>'success','text'=>'Confirm Successfully']);
     }
 }
