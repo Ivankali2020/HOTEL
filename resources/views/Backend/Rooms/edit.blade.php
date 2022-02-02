@@ -42,7 +42,7 @@
                             </div>
                             <div class="form-group ">
                                 <label class="form-label  icon-gradient bg-mean-fruit h6">Photo</label>
-                                <input type="file" name="photo" value="{{ old('photo') }}"  class="form-control"   accept="image/jpeg,image/png">
+                                <input type="file" name="photo" value="{{ old('photo',$room->feature_photo) }}"  class="form-control"   accept="image/jpeg,image/png">
                                 @error('photo')
                                 <x-alert error="{{ $message }}" css="danger my-4 "> </x-alert>
                                 @enderror
@@ -77,7 +77,7 @@
                             <div class="form-group ">
                                 <label class="form-label  icon-gradient bg-mean-fruit h6">Description</label>
                                 <textarea name="description" id="" cols="30" rows="10" class="form-control ">
-                                    {{ $room->description }}
+                                    {{ old('description',$room->description) }}
                                 </textarea>
                                 @error('description')
                                 <x-alert error="{{ $message }}" css="danger my-4 "> </x-alert>
@@ -98,7 +98,7 @@
                             <form id="delPhoto{{$photo->id}}" action="{{ route('photos.destroy',$photo->id) }}" method="post"  enctype="multipart/form-data ">
                                 @csrf @method('DELETE')
                                 <div class="position-relative">
-                                    <img src="{{ asset('storage/thumbnail/'.$photo->name) }}" class="mb-2 " width="100" alt="">
+                                    <img src="{{ asset('storage/photo/'.$photo->name) }}" class="mb-2 " width="100" alt="">
                                     <button class=" btn btn-white  position-absolute text-danger " style="bottom: 10px;right: 10px" form="delPhoto{{$photo->id}}">
                                         <i class="pe-7s-trash text-danger h3 "></i>
                                     </button>

@@ -68,6 +68,24 @@
                                 </button>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-end align-items-center mt-3  ">
+                            <div class="form-group">
+                                <a href="{{ route('redirect.name','github') }}" method="get" class="btn btn-outline-secondary text-dark ">
+                                    Login with github <i class="fas fa-github "></i>
+                                </a>
+                            </div>
+                            <div class="form-group mx-4 ">
+                                <a href="{{ route('redirect.name','facebook') }}" method="get" class="btn btn-outline-primary text-dark ">
+                                    facebook <i class="fas fa-github "></i>
+                                </a>
+                            </div>
+                            <div class="form-group">
+                                <a href="{{ route('redirect.name','google') }}" method="get" class="btn btn-outline-danger text-dark ">
+                                    google <i class="fas fa-github "></i>
+                                </a>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>

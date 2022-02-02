@@ -21,6 +21,8 @@ class CreateConfirmBookingsTable extends Migration
             $table->date('date_from');
             $table->date('date_to');
             $table->bigInteger('room_id');
+
+            $table->enum('checkIn',[0,1,2])->default(0); //1 is checkIn and 2 is Checkout
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

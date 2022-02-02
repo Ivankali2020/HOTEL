@@ -1,6 +1,6 @@
 @extends('Backend.layout.app')
-@section('title') Booking  @endsection
-@section('booking_index_active','mm-active')
+@section('title') Confirmed Booking  @endsection
+@section('confirm_booking_index_active','mm-active')
 @section('content')
     <div class="app-page-title">
         <div class="page-title-wrapper">
@@ -9,7 +9,7 @@
                     <i class="pe-7s-users icon-gradient bg-mean-fruit">
                     </i>
                 </div>
-                <div> Booking List </div>
+                <div> Confirmed List </div>
             </div>
 
         </div>
@@ -21,11 +21,11 @@
                 <div class="card app-page-title">
                     <div class="card-body  ">
                         <div class="d-flex justify-content-between align-content-centerc">
-                            <a href="{{ route('booking.index') }}" class="h4 icon-gradient bg-mean-fruit d-flex align-items-center   mb-0 ">
+                            <a href="{{ route('booking_confirm.index') }}" class="h4 icon-gradient bg-mean-fruit d-flex align-items-center   mb-0 ">
                                 <span class="pe-7s-home  mr-3 h2  "></span>
-                                <span class="lead "> Booking Lists  </span>
+                                <span class="lead "> Confirmed Lists  </span>
                             </a>
-                            <form action="{{ route('booking.index') }}" method="get" class="d-flex ">
+                            <form action="{{ route('booking_confirm.index') }}" method="get" class="d-flex ">
                                 <div class="form-group  mr-4  mb-0 " >
                                     <input type="text" placeholder="search" name="search" class="form-control">
                                 </div>
@@ -43,7 +43,7 @@
                                 <td>Phone</td>
                                 <td>Email</td>
                                 <td>Booking Date</td>
-                                <td>Confirm </td>
+                                <td>CheckIn</td>
                                 <td>Action</td>
                             </tr>
 
@@ -62,7 +62,7 @@
                                             $final = $interval->format('%h');
                                         @endphp
                                         <small >
-                                           From -> {{  date('j M ',strtotime($book->date_from)) }} To -> {{  date('j M ',strtotime($book->date_to)) }}
+                                            From -> {{  date('j M ',strtotime($book->date_from)) }} To -> {{  date('j M ',strtotime($book->date_to)) }}
                                         </small >
                                         <br>
                                         <span>
@@ -71,7 +71,7 @@
 
                                     </td>
                                     <td>
-                                        <form action="{{ route('booking.confirm') }}" method="post" class="form-group text-center " >
+                                        <form action="{{ route('confirm_booking.checkIn') }}" method="post" class="form-group text-center " >
                                             @csrf
                                             <div class="form-check form-switch">
                                                 <input type="hidden" value="{{ $book->id}}" name="book_id">
@@ -80,9 +80,9 @@
                                         </form>
                                     </td>
                                     <td class="  ">
-                                        <form id="delBooking{{ $book->id }}" action="{{ route('booking.destroy',$book->id) }}" method="post" class=" d-inline     ">
-                                            @csrf @method('DELETE')
-                                            <div class="pe-7s-trash text-danger   text-decoration-none  fsize-1 " onclick="allow('{{$book->name}}','{{ $book->id }}')"></div>
+                                        <form id="delConfirmBtn{{ $book->id }}" action="{{ route('booking_confirm.destroy',$book->id) }}" method="post" class=" d-inline">
+                                            @csrf @method('delete')
+                                            <div class="pe-7s-trash text-danger   text-decoration-none  fsize-1 " onclick="allow('{{ $book->name }}','{{ $book->id }}')" ></div>
                                         </form>
                                     </td>
                                 </tr>
@@ -117,7 +117,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $('#delBooking'+id).submit();
+                    $('#delConfirmBtn'+id).submit();
                 }
             })
         }

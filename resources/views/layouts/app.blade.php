@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('Backend/css/main.css') }}">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -33,7 +34,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+{{--                        <a href="{{ route('booking.index') }}" class="btn btn-outline-light icon-gradient bg-mean-fruit ">--}}
+{{--                            Booking <i class="pe-7s-bookmarks ml-3 "></i>--}}
+{{--                        </a>--}}
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -75,9 +78,9 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
+
+    @yield('content')
+
+    @yield('script')
 </body>
 </html>

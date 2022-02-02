@@ -47,7 +47,7 @@ class RoomController extends Controller
      */
     public function store(StoreRoomRequest $request)
     {
-
+//        return $request;
         $request->validate([
             "photos" => "required",
             "photo" => "required|mimes:jpeg,png|max:5000",
@@ -138,24 +138,29 @@ class RoomController extends Controller
     public function update(UpdateRoomRequest $request, Room $room)
     {
 
-        $request->validate([
-            "photo" => "required|mimes:jpeg,png|max:5000",
-        ]);
+//        $request->validate([
+//            "photo" => "required|mimes:jpeg,png|max:5000",
+//        ]);;
         if(!Storage::exists("public/thumbnail")){
             Storage::makeDirectory("public/thumbnail");
         }
-        $file = $request->file('photo');
-        $newName = uniqid()."_photo.".$file->extension();
-        $file->storeAs('public/photo',$newName);
 
-        $img = Image::make($file);
-        $img->fit(200,200);
-        $img->save(public_path("/storage/thumbnail/".$newName),60);
+        if($request->file('photo') !== null){
+            $file = $request->file('photo');
+            $newName = uniqid()."_photo.".$file->extension();
+            $file->storeAs('public/photo',$newName);
+
+            $img = Image::make($file);
+            $img->fit(200,200);
+            $img->save(public_path("/storage/thumbnail/".$newName),60);
+            $room->feature_photo = $newName;
+
+        }
 
         $room->name = $request->name;
+
         $room->description = $request->description;
         $room->price = $request->price;
-        $room->feature_photo = $newName;
         $room->user_id = Auth::user()->id;
         $room->slug = \Illuminate\Support\Str::slug($request->name);
         $room->update();

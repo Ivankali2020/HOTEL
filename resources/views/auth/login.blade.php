@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="container ">
+    <div class="row justify-content-center  ">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card mt-5   ">
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
@@ -63,7 +63,28 @@
                                     </a>
                                 @endif
                             </div>
+
                         </div>
+
+                        <div class="d-flex justify-content-center align-items-center mt-3  ">
+                            <div class="form-group">
+                                <a href="{{ route('redirect.name','github') }}" method="get" class="btn btn-outline-secondary text-dark ">
+                                    Login with github <i class="fas fa-github "></i>
+                                </a>
+                            </div>
+                            <div class="form-group mx-4 ">
+                                <a href="{{ route('redirect.name','facebook') }}" method="get" class="btn btn-outline-primary text-dark ">
+                                   facebook <i class="fas fa-github "></i>
+                                </a>
+                            </div>
+                            <div class="form-group">
+                                <a href="{{ route('redirect.name','google') }}" method="get" class="btn btn-outline-danger text-dark ">
+                                    google <i class="fas fa-github "></i>
+                                </a>
+                            </div>
+                        </div>
+
+
                     </form>
                 </div>
             </div>
